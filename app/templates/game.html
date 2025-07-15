@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container text-center mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <!-- Заголовок с анимацией -->
+            <h1 class="display-3 fw-bold mb-4 text-primary animate__animated animate__bounceIn">
+                <i class="bi bi-magic"></i> Кликер!
+            </h1>
+
+            <!-- Счетчик кликов -->
+            <div class="card shadow-lg mb-5 border-0 rounded-3">
+                <div class="card-body p-4">
+                    <h2 class="fs-5 text-secondary mb-3">Ваш текущий счет:</h2>
+                    <div class="display-1 fw-bold text-success counter" id="click-counter">
+                        {{ clicks }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Анимированная кнопка -->
+            <form action="{{ url_for('click') }}" method="post">
+                <button type="submit" class="btn btn-primary btn-lg rounded-pill p-4 shadow animate__animated animate__pulse animate__infinite"
+                   id="click-button">
+                    <i class="bi bi-hand-index-thumb-fill me-2"></i>
+                    Кликни меня!
+                </button>
+            </form>
+
+            <!-- Дополнительные элементы дизайна -->
+            <div class="mt-5">
+                <div class="d-flex justify-content-center gap-3">
+                    <div class="p-3 bg-light rounded-circle animate__animated animate__fadeInLeft">
+                        <i class="bi bi-trophy text-warning fs-1"></i>
+                    </div>
+                    <div class="p-3 bg-light rounded-circle animate__animated animate__fadeInUp">
+                        <i class="bi bi-graph-up text-success fs-1"></i>
+                    </div>
+                    <div class="p-3 bg-light rounded-circle animate__animated animate__fadeInRight">
+                        <i class="bi bi-star text-info fs-1"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Анимация при клике -->
+<div id="click-animation" class="position-fixed" style="display: none; z-index: 1050;">
+    <span class="text-success fw-bold fs-3 animate__animated">+1</span>
+</div>
+<!-- Дополнительные стили -->
+<style>
+    .counter {
+        transition: all 0.3s ease;
+    }
+    #click-button {
+        transition: transform 0.1s;
+        min-width: 220px;
+    }
+    #click-button:hover {
+        transform: scale(1.05);
+    }
+    #click-button:active {
+        transform: scale(0.95);
+    }
+</style>
+<!-- Подключение анимаций -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+<script>
+    // Анимация клика
+    document.getElementById('click-button').addEventListener('click', function(e) {
+        // Создаем анимацию
+        const animation = document.getElementById('click-animation');
+        animation.style.display = 'block';
+        animation.style.left = (e.clientX - 30) + 'px';
+        animation.style.top = (e.clientY - 50) + 'px';
+        animation.className = 'position-fixed animate__animated animate__bounceIn';
+
+        // Увеличиваем счетчик с анимацией
+        const counter = document.getElementById('click-counter');
+        counter.classList.add('animate__heartBeat');
+
+        // Через 1 секунду удаляем анимацию
+        setTimeout(() => {
+            animation.style.display = 'none';
+            counter.classList.remove('animate__heartBeat');
+        }, 1000);
+    });
+</script>
+{% endblock %}

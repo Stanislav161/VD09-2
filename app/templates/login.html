@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <!-- Карточка формы -->
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white py-4">
+                    <h1 class="text-center mb-0 display-5 fw-bold">
+                        <i class="bi bi-box-arrow-in-right me-2"></i>Вход в систему
+                    </h1>
+                </div>
+
+                <div class="card-body p-4 p-md-5">
+                    <form method="post" action="{{ url_for('login')}}" class="needs-validation" novalidate>
+                        {{ form.hidden_tag() }}
+
+                        <!-- Поле имени пользователя -->
+                        <div class="mb-4">
+                            <label for="username" class="form-label fw-medium">
+                                <i class="bi bi-person-fill me-2"></i>Имя пользователя
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">
+                                    <i class="bi bi-person text-primary"></i>
+                                </span>
+                                <input type="text" class="form-control form-control-lg py-3"
+                                       id="username" name="username"
+                                       placeholder="Введите ваше имя пользователя" required>
+                            </div>
+                        </div>
+
+                        <!-- Поле пароля -->
+                        <div class="mb-4">
+                            <label for="password" class="form-label fw-medium">
+                                <i class="bi bi-lock-fill me-2"></i>Пароль
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">
+                                    <i class="bi bi-key text-primary"></i>
+                                </span>
+                                <input type="password" class="form-control form-control-lg py-3"
+                                       id="password" name="password"
+                                       placeholder="Введите ваш пароль" required>
+                                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Кнопка отправки -->
+                        <div class="d-grid mb-4">
+                            <button type="submit" class="btn btn-primary btn-lg py-3 fw-bold shadow">
+                                Войти
+                            </button>
+                        </div>
+
+                        <!-- Ссылки -->
+                        <div class="text-center pt-3">
+                            <p class="mb-2">
+                                <a href="{{ url_for('register') }}" class="text-decoration-none">
+                                    <i class="bi bi-person-plus me-1"></i>Создать новый аккаунт
+                                </a>
+                            </p>
+                            <p class="mb-0">
+                                <a href="#" class="text-decoration-none">
+                                    <i class="bi bi-question-circle me-1"></i>Забыли пароль?
+                                </a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Стили для формы -->
+<style>
+    .card {
+        border-radius: 20px;
+        overflow: hidden;
+    }
+    .form-control, .input-group-text {
+        border-radius: 12px !important;
+    }
+    .form-control:focus {
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
+    .card-header {
+        border-radius: 0 !important;
+    }
+</style>
+<!-- Скрипт для показа/скрытия пароля -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#password');
+
+        if (togglePassword && password) {
+            togglePassword.addEventListener('click', function() {
+                const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                password.setAttribute('type', type);
+                this.innerHTML = type === 'password' ?
+                    '<i class="bi bi-eye"></i>' :
+                    '<i class="bi bi-eye-slash"></i>';
+            });
+        }
+
+        // Валидация формы
+        const forms = document.querySelectorAll('.needs-validation');
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    });
+</script>
+{% endblock %}
